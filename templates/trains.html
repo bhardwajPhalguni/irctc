@@ -1,0 +1,51 @@
+<html>
+<html lang="en" dir="ltr">
+<head>
+	<script type = "text/javascript"
+		scr = "{{ url_for('static', filename= 'continue.js')}}">
+	</script>
+</head>
+<style>
+body
+	{
+		border: 2px solid maroon;
+		background-color: linen;
+	}
+</style>
+<body>
+<form action = "/reservation" method = "POST">
+ 
+<table border= 2>
+<tr>
+
+<td rowspan= 2> <h1> ID </h1> </td>
+<td rowspan= 2><h1> Train Name </h1></td>
+<td rowspan=2><h1>Starting place</h1></td>
+<td rowspan=2><h1>Destination Place</h1></td>
+<td rowspan=2><h1>Fare</h1></td>
+<td rowspan= 2> <h1>Date</h1></td>
+<td colspan=2><h1><center>Time</center></h1></td>
+
+</tr>
+<tr>
+  <th>arrival </th>
+  <th>depart </th>
+</tr>
+
+{%  for dictval in data %}
+<tr>
+<td>{{ dictval['ID'] }} <div class = "radio"><label><input type= "radio" name= "optradio"> </label> </div> </td>
+<td>{{ dictval['train_name'] }}</td>
+<td>{{ dictval['starting_station'] }}</td>
+<td>{{ dictval['Destination_name_kms'] }} kms</td>
+<td>{{ dictval['Fare_Rs'] }} Rs.</td>
+<td>{{ dictval['Date_aug'] }} /8/18</td>
+<td>{{ dictval['Time_Arrival'] }} PM</td>
+<td>{{ dictval['Time_Departure'] }} PM</td>
+</tr>
+{% endfor %}
+</table>
+	<input type = "submit" value = "reservation" />
+</body>
+</html>
+
