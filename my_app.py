@@ -154,7 +154,7 @@ def setcookie():
 @app.route("/getcookie", methods = ['GET'])
 def getcookie():
     email = request.cookies.get('berth')
-    print("======email========", email)
+    print("======email===============", email)
     conn = psycopg2.connect(host='aissot.openerp4you.com', user='odoo', password='odoo', dbname='aissot_test')
     print('--------conn----------', conn)
     cur = conn.cursor()
