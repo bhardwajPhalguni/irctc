@@ -33,21 +33,17 @@ p{
  
 
 <center><H1 style= "border: 2px solid pink";>RESERVATION FORM</H1></center>
-<P>NAME<INPUT TYPE="TEXT" name=name SIZE="58" MAXLENGTH="99" />
-<p>AGE<INPUT TYPE="TEXT" SIZE="60" MAXLENGTH="99" />
-<p>ADDRESS<INPUT <TYPE="TEXT" SIZE="53" MAXLENGTH="99" />
-<p>EMAIL<INPUT TYPE="TEXT" SIZE=57" MAXLENGTH="99" />
-<p>TELEPHONE<INPUT TYPE="TEXT" SIZE="50" MAXLENGTH="99" />
-<p>Traveling from city <SELECT CITY= ><option>select</option><option> Delhi</option><option value= >Pune</option><option>Bangalore</option><option>Kolkata</option><option>Mumbai</option>
+<P>NAME<INPUT TYPE="TEXT" name="name" SIZE="58" MAXLENGTH="99" />
+<p>AGE<INPUT TYPE="TEXT"  name="age" SIZE="60" MAXLENGTH="99" />
+<p>ADDRESS<INPUT TYPE="TEXT" SIZE="53" name="address" MAXLENGTH="99" />
+<p>EMAIL<INPUT TYPE="TEXT"  name="email" SIZE=57"  MAXLENGTH="99" />
+<p>PHONE<INPUT TYPE="TEXT" name="phone" SIZE=50" MAXLENGTH="99" />
+<p>Traveling from city <SELECT name="origin"><option>select</option><option>Delhi</option><option>Pune</option><option>Bangalore</option><option>Kolkata</option><option>Mumbai</option>
 </select>
-<p>Traveling to city <SELECT CITY= ><option>select</option><option> Delhi</option><option value= >Pune</option><option>Bangalore</option><option>Kolkata</option><option>Mumbai</option>
+<p>Traveling to city <SELECT name="destination"><option>select</option><option> Delhi</option><option>Pune</option><option>Bangalore</option><option>Kolkata</option><option>Mumbai</option>
 </select>
-<p>Journey Date <INPUT TYPE="TEXT" SIZE="33" MAXLENGTH="99" />
+<p>Date <INPUT TYPE="TEXT" name="date" SIZE="33" MAXLENGTH="99" />
 <input type="submit" value="submit" />
-<input 
-
-type="reset" value="clear" /></form>
-
-
+<input type="reset" value="clear" /></form>
 <a href="/logout">Click here to log out</a>
 </BODY></HTML>

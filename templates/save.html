@@ -6,14 +6,25 @@
  
 	<meta charset="utf-8">
 	<script type = "text/javascript"
-		scr = "{{ url_for('static', filename= 'continue.js')}}">
+		scr = "{{ url_for('static', filename= 'hello.js')}}">
 	</script>
 </head>
 <style>
 body
 	{
-		border: 2px solid maroon;
+		border: 25px solid maroon;
 		background-color: linen;
+		margin-left: 40px;
+		margin-top: 30px;
+		padding 20px;
+		text-align: justify;
+	}
+	b{
+		width: 400px;
+		background-color: linen;
+		width: 500px;
+  		padding: 2px;
+		letter-spacing: 2px;
 	}
 </style>
 </head>
@@ -21,12 +32,42 @@ body
    
 <body>
    
-	<form action = "/" method = "POST">
-	<center><p>to view/download the ticket </p>   
-	<input type = "submit" value = "view" />  
-	<input type = "submit" value = "download" />
+	<form action = "/save" method = "POST">
+	<center><p>...............................................................................................................................................</p>
+	<center> <B> <U>Railway Ticket </U> </B> </center> 
+	<center> 
+	{%  for dictval in data %}
+	<b>Passenger name: {{dictval['name']}}</b> 
+	</center> 
+	<center> 
+	<b>Age: {{dictval['age']}}</b>
+	</center> 
+	<center> 
+	<b>Origin: {{dictval['origin']}}</b>
+	</center> 
+	<center> 
+	<b>Destination: {{dictval['destination']}}</b>
+	</center> 
+	<center> 
+	<b>Date: {{dictval['date']}}</b>
 	</center>
+	
+	<center> 
+	<b>Berth: {{dictval['berth']}}</b>
+	</center>
+	<center> 
+	<b>Class: {{dictval['bclass']}}</b>
+	</center>
+	<center>  
+	<b>Email: {{dictval['email']}}</b>
+	</center> 
+	<center> 
+	<b>Phone: {{dictval['phone']}}</b>
+	</center>
+	{% endfor %}
 	</form>
+<center><a href="/logout">Click here to log out</a></center>
+<center><p>...............................................................................................................................................</p>
 </body>
 
 </html>
