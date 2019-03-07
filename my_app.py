@@ -10,7 +10,6 @@ username = 'odoo'
 password = 'odoo'
 database = 'aissot_test'
 
-
 class PostgresJsonEncoder(json.JSONEncoder):
 
     def default(self, obj):
@@ -59,6 +58,7 @@ class PostgresConnector:
             data = cur.fetchall()
             print("datadatadatadatadatadatadatadatadata", data)
             col = ('ID', 'train_name', 'starting_station', 'Destination_name_kms', 'Fare_Rs', 'Date_aug', 'Time_Arrival', 'Time_Departure')
+            cur.close()
             results = []
             for val in data:
                 temp = zip(col, val)
@@ -69,7 +69,11 @@ class PostgresConnector:
             #results = map(lambda x: dict(zip(col, x)), data)
             #res = json.dumps(results, cls=PostgresJsonEncoder)
             cur.close()
+            #train = request.form.get('train', '')
+            #obj = make_response(render_template("trains.html"))
+            #train = obj.set_cookie('train',train)
             return results #Response(res, content_type='application/JSON; charset=utf-8')
+
         except Exception as e:
             cur.close()
             return str(e)
@@ -123,33 +127,92 @@ def submit():
         db_obj = PostgresConnector()
         result = db_obj.getTrainsDetails()
         print("=======result========", result)
-        return render_template("trains.html", data  = result)
+        print("===========request.form========", request.form)
+
+        name = request.form.get('name', '')
+        email = request.form.get('email', '')
+        age = request.form.get('age', '')
+        origin = request.form.get('origin', '')
+        destination = request.form.get('destination', '')
+        date = request.form.get('date', '')
+        phone = request.form.get('phone', '')
+        #Set Cookie
+        res_obj = make_response(render_template("trains.html", data  = result))
+        res_obj.set_cookie('name', name)
+        res_obj.set_cookie('email', email)
+        res_obj.set_cookie('age', age)
+        res_obj.set_cookie('origin', origin)
+        res_obj.set_cookie('destination', destination)
+        res_obj.set_cookie('date', date)
+        res_obj.set_cookie('phone', phone)
+        return res_obj
     return redirect(url_for('login'))
 
 @app.route("/reservation", methods = ['POST','GET'])
 def reservation():
-    if 'Select Your Berth' in session:
-        return redirect(url_for('submit'))
+    print("==========request.method===========", request.method)
+    #if request.method == 'POST':
+    print("=======request.form========", request.form)
+        #print("=======request.cookies_get========", request.cookies_get)
+
+    if 'username' in session:
+        berth = request.form.get('berth', '')
+        bclass = request.form.get('bclass', '')
+        obj = make_response(render_template("reservation.html"))
+        obj.set_cookie('berth', berth)
+        obj.set_cookie('bclass', bclass)
+        return obj
+    return redirect(url_for('submit'))
+    #return redirect(url_for('save'))
+        #print("======form.get======", obj)
+        #return render_template("reservation.html")
+    #return render_template("save.html")
+
+@app.route("/save", methods=['POST', 'GET'])
+def save():
+    print("============request.method=================", request.method)
     if request.method == 'POST':
-        if request.form.get('Select Your Class'):
-            session['Select Your Berth'] = request.form.get('Select Your Class', '')
-            return redirect(url_for('submit'))
-    return render_template("reservation.html")
+        print("========request.form========", request.form)
+        dict = {}
+        print("==========request.cookies==============", request.cookies)
+
+        name = request.cookies.get('name', '')
+        email = request.cookies.get('email', '')
+        age = request.cookies.get('age', '')
+        origin = request.cookies.get('origin', '')
+        destination = request.cookies.get('destination', '')
+        date = request.cookies.get('date', '')
+        phone = request.cookies.get('phone', '')
+        # Getting from form
+        berth = request.form.get('berth', '')
+        bclass = request.form.get('bclass', '')
+        #train = request.form.get('train', '')
+        dict = {}
+        dict['name'] = name
+        dict['email'] = email
+        dict['age'] = age
+        dict['origin'] = origin
+        dict['destination'] = destination
+        dict['berth'] = berth
+        dict['bclass'] = bclass
+        #dict['train'] = train
+        dict['date'] = date
+        dict['phone'] = phone
+        print("======dict=======", dict)
+        return render_template("save.html", data=[dict])
+    return redirect(url_for('submit'))
 
 @app.route("/setcookie", methods = ['POST', 'GET'])
 def setcookie():
     print('request.method')
     if request.method == 'POST':
-        berth = request.form['Select Your Berth']
-        sclass = request.form['Select Your Class']
-        obj = make_response(render_template('readcookie.html', berth = 'Select Your Berth', sclass = 'Select Your Class'))
-        obj.set_cookie('Select Your Berth', berth)
-        obj.set_cookie('Select Your Class', sclass )
+        email = request.form['email']
+        name = request.form['name']
+        obj = make_response(render_template('readcookie.html', email = 'email', name = 'name'))
+        obj.set_cookie('email', email)
+        obj.set_cookie('name', name)
         getcookie()
         return obj
-    else:
-        return redirect(url_for('reservation'))
-    #return render_template("save.html")
 
 @app.route("/getcookie", methods = ['GET'])
 def getcookie():
@@ -169,9 +232,9 @@ def getcookie():
 @app.route('/session/')
 def home_session():
     cookies = request.cookies
-    if 'Select Your Berth' in session:
-        berth = session['Select Your Berth']
-        return 'your berth is ' + berth + '<br>' + \
+    if 'name' in session:
+        name = session['name']
+        return 'your name is ' + name + '<br>' + \
                 "<b><a href = '/session/logout'> click here to log out</a></b>"
     return "your seat is confirmed"
 
@@ -179,19 +242,19 @@ def home_session():
 def session_login():
     if request.method == 'POST':
         cookies = request.cookies
-        session['Select Your Berth'] = request.form['Select Your Berth']
-        return redirect(url_for('reservation'))
+        session['name'] = request.form['name']
+        return redirect(url_for('index'))
     return '''
        <form action = "" method = "post">
-          <p><input type = Select Your Berth = berth /></p>
+          <p><input type = name = name /></p>
           <p<<input type = submit value = Login /></p>
        </form>
        '''
 @app.route('/session/logout')
 def session_logout():
     # remove the username from the session if it is there
-    session.pop('Select Your Berth', None)
-    return redirect(url_for('reservation'))
+    session.pop('name', None)
+    return redirect(url_for('login'))
 
 if __name__ == "__main__":
     app.run(debug=True)
